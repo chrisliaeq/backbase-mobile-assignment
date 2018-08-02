@@ -3,10 +3,13 @@ package ca.aequilibrium.weather.activities;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-
 import ca.aequilibrium.weather.R;
+import ca.aequilibrium.weather.fragments.CityFragment;
+import ca.aequilibrium.weather.fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,18 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-
-                    return true;
-                case R.id.navigation_dashboard:
-
-                    return true;
-                case R.id.navigation_notifications:
-
-                    return true;
-            }
-            return false;
+            setFragment(item.getItemId());
+            return true;
         }
     };
 
@@ -38,5 +31,48 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        setFragment(R.id.navigation_home);
+    }
+
+    private void setFragment(final int itemId) {
+        Fragment fragment = null;
+        String fragmentTag = "";
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        switch (itemId) {
+            case R.id.navigation_home:
+                fragmentTag = HomeFragment.TAG;
+                fragment = fragmentManager.findFragmentByTag(fragmentTag);
+                if (fragment == null) {
+                    fragment = new HomeFragment();
+                }
+                break;
+            case R.id.navigation_city:
+                fragmentTag = CityFragment.TAG;
+                fragment = fragmentManager.findFragmentByTag(fragmentTag);
+                if (fragment == null) {
+                    fragment = new CityFragment();
+                }
+                break;
+            case R.id.navigation_settings:
+
+                break;
+            case R.id.navigation_help:
+
+                break;
+        }
+        if (fragment != null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment, fragmentTag)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+
+        }
+        super.onBackPressed();
     }
 }
