@@ -4,17 +4,9 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.os.AsyncTask;
-import android.util.Log;
 import ca.aequilibrium.weather.database.AppDatabase;
 import ca.aequilibrium.weather.models.BookmarkedLocation;
-import ca.aequilibrium.weather.models.CurrentWeather;
-import ca.aequilibrium.weather.network.GetCurrentForecastAsyncTask;
-import ca.aequilibrium.weather.network.GetRequestAsyncTask;
-import ca.aequilibrium.weather.network.NetworkConstants;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
-
 import java.util.List;
 
 /**
@@ -22,8 +14,6 @@ import java.util.List;
  * Copyright © 2018 Aequilibrium. All rights reserved.
  */
 public class HomeViewModel extends AndroidViewModel {
-
-    private MutableLiveData<List<BookmarkedLocation>> mBookmarkedLocationData = new MutableLiveData<>();
 
     public HomeViewModel(Application application) {
         super(application);
@@ -39,11 +29,17 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<BookmarkedLocation>> getBookmarkedLocations() {
-        return AppDatabase.getDatabase(getApplication().getApplicationContext()).getLocationDao()
+        return AppDatabase
+                .getDatabase(getApplication().getApplicationContext()).getLocationDao()
                 .getAllBookmarkedLocations();
     }
 
-    public void getCurrentWeather() {
+    public void removeLocation(final BookmarkedLocation location) {
+        AppDatabase.getDatabase(getApplication().getApplicationContext()).getLocationDao()
+                .removeLocation(location);
+    }
+
+    /*public void getCurrentWeather() {
         GetCurrentForecastAsyncTask getRequestAsyncTask = new GetCurrentForecastAsyncTask(CurrentWeather.class);
         getRequestAsyncTask.request(new GetRequestAsyncTask.RequestListener<CurrentWeather>() {
             @Override
@@ -51,5 +47,5 @@ public class HomeViewModel extends AndroidViewModel {
 
             }
         });
-    }
+    }*/
 }

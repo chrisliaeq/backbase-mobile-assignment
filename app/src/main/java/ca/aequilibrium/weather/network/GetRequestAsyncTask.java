@@ -17,13 +17,18 @@ public abstract class GetRequestAsyncTask<T> extends AsyncTask<String, Void, T>{
 
     private static final String TAG = GetRequestAsyncTask.class.getSimpleName();
     private Class<T> mClass;
-    protected RequestListener<T> mListener;
+    private RequestListener<T> mListener;
 
     GetRequestAsyncTask(Class<T> clazz) {
         mClass = clazz;
     }
 
-    public abstract void request(RequestListener<T> listener);
+    public void request(RequestListener<T> listener) {
+        mListener = listener;
+        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, buildUrl());
+    }
+
+    abstract String buildUrl();
 
     @Override
     protected T doInBackground(String... strings) {

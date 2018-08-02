@@ -1,7 +1,7 @@
 package ca.aequilibrium.weather.network;
 
 
-import android.os.AsyncTask;
+import ca.aequilibrium.weather.BuildConfig;
 import ca.aequilibrium.weather.models.CurrentWeather;
 
 /**
@@ -10,13 +10,22 @@ import ca.aequilibrium.weather.models.CurrentWeather;
  */
 public class GetCurrentForecastAsyncTask extends GetRequestAsyncTask<CurrentWeather> {
 
-    public GetCurrentForecastAsyncTask(Class<CurrentWeather> clazz) {
+    private double mLatitude;
+    private double mLongitude;
+
+    public GetCurrentForecastAsyncTask(double latitude, double longitude, Class<CurrentWeather> clazz) {
         super(clazz);
+        mLatitude = latitude;
+        mLongitude = longitude;
     }
 
     @Override
-    public void request(RequestListener<CurrentWeather> listener) {
-        mListener = listener;
-        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "http://api.openweathermap.org/data/2.5/weather?lat=0&lon=0&appid=c6e381d8c7ff98f0fee43775817cf6ad&units=metric");
+    String buildUrl() {
+        String url = NetworkConstants.BASE_URL + NetworkConstants.WEATHER;
+        url += "?lat=" + mLatitude;
+        url += "&lon=" + mLongitude;
+        url += "&units=metrics";
+        url += "&appid=" + BuildConfig.WEATHER_APP_ID;
+        return url;
     }
 }

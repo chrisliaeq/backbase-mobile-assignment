@@ -10,7 +10,7 @@ import ca.aequilibrium.weather.models.BookmarkedLocation;
  * Created by Chris Li on 2018-08-01.
  * Copyright © 2018 Aequilibrium. All rights reserved.
  */
-@Database(entities = {BookmarkedLocation.class}, version = 1)
+@Database(entities = {BookmarkedLocation.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase sInstance;

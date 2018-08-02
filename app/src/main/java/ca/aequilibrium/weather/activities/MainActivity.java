@@ -46,13 +46,6 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new HomeFragment();
                 }
                 break;
-            case R.id.navigation_city:
-                fragmentTag = CityFragment.TAG;
-                fragment = fragmentManager.findFragmentByTag(fragmentTag);
-                if (fragment == null) {
-                    fragment = new CityFragment();
-                }
-                break;
             case R.id.navigation_settings:
 
                 break;

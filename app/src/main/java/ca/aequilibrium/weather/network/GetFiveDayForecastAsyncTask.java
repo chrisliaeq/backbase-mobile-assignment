@@ -1,17 +1,23 @@
 package ca.aequilibrium.weather.network;
 
-import android.os.AsyncTask;
 
-import com.google.android.gms.maps.model.LatLng;
+
+import ca.aequilibrium.weather.models.FiveDayForecast;
+
 
 /**
  * Created by Chris Li on 2018-08-01.
  * Copyright © 2018 Aequilibrium. All rights reserved.
  */
-public class GetFiveDayForecastAsyncTask extends AsyncTask<LatLng, Void, Void> {
+public class GetFiveDayForecastAsyncTask extends GetRequestAsyncTask<FiveDayForecast> {
+
+
+    GetFiveDayForecastAsyncTask(final Class<FiveDayForecast> clazz) {
+        super(clazz);
+    }
 
     @Override
-    protected Void doInBackground(LatLng... latLngs) {
-        return null;
+    String buildUrl() {
+        return "http://api.openweathermap.org/data/2.5/forecast?lat=0&lon=0&appid=c6e381d8c7ff98f0fee43775817cf6ad&units=metric";
     }
 }

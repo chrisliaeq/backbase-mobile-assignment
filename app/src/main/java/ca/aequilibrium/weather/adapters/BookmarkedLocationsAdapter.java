@@ -5,11 +5,14 @@ import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import ca.aequilibrium.weather.R;
 import ca.aequilibrium.weather.adapters.BookmarkedLocationsAdapter.LocationItemViewHolder;
 import ca.aequilibrium.weather.models.BookmarkedLocation;
-
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +22,12 @@ import java.util.List;
  */
 public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationItemViewHolder> {
 
+    public interface OnRemoveLocationListener {
+
+        void onLocationRemoved(BookmarkedLocation location);
+    }
     private List<BookmarkedLocation> mLocations = new ArrayList<>();
+    private OnRemoveLocationListener mOnRemoveLocationListener;
 
     @Override
     public int getItemCount() {
@@ -28,14 +36,29 @@ public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationIte
 
     @Override
     public void onBindViewHolder(@NonNull final LocationItemViewHolder holder, final int position) {
-        BookmarkedLocation location = mLocations.get(position);
-
+        final BookmarkedLocation location = mLocations.get(position);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        holder.latitudeText.setText(decimalFormat.format(location.getLatitude()));
+        holder.longitudeText.setText(decimalFormat.format(location.getLongitude()));
+        holder.removeButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                if (mOnRemoveLocationListener != null) {
+                    mOnRemoveLocationListener.onLocationRemoved(location);
+                }
+            }
+        });
     }
 
     @NonNull
     @Override
     public LocationItemViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        return new LocationItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_location, parent, false));
+        return new LocationItemViewHolder(
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_location, parent, false));
+    }
+
+    public void setListener(final OnRemoveLocationListener listener) {
+        mOnRemoveLocationListener = listener;
     }
 
     public void setLocationItems(List<BookmarkedLocation> locations) {
@@ -48,8 +71,15 @@ public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationIte
 
     static class LocationItemViewHolder extends RecyclerView.ViewHolder {
 
+        TextView latitudeText;
+        TextView longitudeText;
+        ImageView removeButton;
+
         public LocationItemViewHolder(final View itemView) {
             super(itemView);
+            latitudeText = itemView.findViewById(R.id.latitude_text);
+            longitudeText = itemView.findViewById(R.id.longitude_text);
+            removeButton = itemView.findViewById(R.id.remove_button);
         }
     }
 
