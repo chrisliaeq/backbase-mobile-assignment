@@ -3,15 +3,16 @@ package ca.aequilibrium.weather.network;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.google.gson.Gson;
-
-import javax.net.ssl.HttpsURLConnection;
-import java.io.*;
-
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
 
-public abstract class GetRequestAsyncTask<T> extends AsyncTask<String, Void, T>{
+public abstract class GetRequestAsyncTask<T> extends AsyncTask<String, Void, T> {
 
     public interface RequestListener<T> {
+
         void onComplete(T response);
     }
 
@@ -27,8 +28,6 @@ public abstract class GetRequestAsyncTask<T> extends AsyncTask<String, Void, T>{
         mListener = listener;
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, buildUrl());
     }
-
-    abstract String buildUrl();
 
     @Override
     protected T doInBackground(String... strings) {
@@ -48,7 +47,7 @@ public abstract class GetRequestAsyncTask<T> extends AsyncTask<String, Void, T>{
                 throw new IOException("HTTP error code: " + responseCode);
             }
             InputStream stream = connection.getInputStream();
-            String response = readStream(stream, 1024);
+            String response = readStream(stream);
             return new Gson().fromJson(response, mClass);
         } catch (Exception e) {
             Log.e(TAG, urlString, e);
@@ -64,20 +63,15 @@ public abstract class GetRequestAsyncTask<T> extends AsyncTask<String, Void, T>{
         }
     }
 
-    private String readStream(InputStream stream, int maxReadSize)
-            throws IOException {
-        Reader reader = null;
-        reader = new InputStreamReader(stream, "UTF-8");
-        char[] rawBuffer = new char[maxReadSize];
-        int readSize;
-        StringBuilder buffer = new StringBuilder();
-        while (((readSize = reader.read(rawBuffer)) != -1) && maxReadSize > 0) {
-            if (readSize > maxReadSize) {
-                readSize = maxReadSize;
-            }
-            buffer.append(rawBuffer, 0, readSize);
-            maxReadSize -= readSize;
+    abstract String buildUrl();
+
+    private String readStream(InputStream stream) throws IOException {
+        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = stream.read(buffer)) != -1) {
+            result.write(buffer, 0, length);
         }
-        return buffer.toString();
+        return result.toString("UTF-8");
     }
 }

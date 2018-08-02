@@ -2,6 +2,7 @@ package ca.aequilibrium.weather.network;
 
 
 
+import ca.aequilibrium.weather.BuildConfig;
 import ca.aequilibrium.weather.models.FiveDayForecast;
 
 
@@ -11,13 +12,21 @@ import ca.aequilibrium.weather.models.FiveDayForecast;
  */
 public class GetFiveDayForecastAsyncTask extends GetRequestAsyncTask<FiveDayForecast> {
 
+    private double mLatitude;
+    private double mLongitude;
 
-    GetFiveDayForecastAsyncTask(final Class<FiveDayForecast> clazz) {
+    public GetFiveDayForecastAsyncTask(double latitude, double longitude, Class<FiveDayForecast> clazz) {
         super(clazz);
+        mLatitude = latitude;
+        mLongitude = longitude;
     }
-
     @Override
     String buildUrl() {
-        return "http://api.openweathermap.org/data/2.5/forecast?lat=0&lon=0&appid=c6e381d8c7ff98f0fee43775817cf6ad&units=metric";
+        String url = NetworkConstants.BASE_URL + NetworkConstants.FORECAST;
+        url += "?lat=" + mLatitude;
+        url += "&lon=" + mLongitude;
+        url += "&units=metric";
+        url += "&appid=" + BuildConfig.WEATHER_APP_ID;
+        return url;
     }
 }

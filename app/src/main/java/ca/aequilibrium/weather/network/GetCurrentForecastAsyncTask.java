@@ -24,7 +24,7 @@ public class GetCurrentForecastAsyncTask extends GetRequestAsyncTask<CurrentWeat
         String url = NetworkConstants.BASE_URL + NetworkConstants.WEATHER;
         url += "?lat=" + mLatitude;
         url += "&lon=" + mLongitude;
-        url += "&units=metrics";
+        url += "&units=metric";
         url += "&appid=" + BuildConfig.WEATHER_APP_ID;
         return url;
     }

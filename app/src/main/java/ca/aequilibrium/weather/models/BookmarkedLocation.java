@@ -11,14 +11,22 @@ import android.support.annotation.NonNull;
 @Entity
 public class BookmarkedLocation {
 
+    private CurrentWeather currentWeather;
     // Will be the toString() call on the LatLng model, to prevent potential duplication of locations.
     @PrimaryKey
     @NonNull
     private String id;
-
+    private long lastUpdated;
     private double latitude;
     private double longitude;
 
+    public CurrentWeather getCurrentWeather() {
+        return currentWeather;
+    }
+
+    public void setCurrentWeather(final CurrentWeather currentWeather) {
+        this.currentWeather = currentWeather;
+    }
 
     public String getId() {
         return id;
@@ -26,6 +34,14 @@ public class BookmarkedLocation {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public long getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(final long lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     public double getLatitude() {

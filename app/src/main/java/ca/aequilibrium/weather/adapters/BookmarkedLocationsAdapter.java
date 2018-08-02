@@ -22,12 +22,15 @@ import java.util.List;
  */
 public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationItemViewHolder> {
 
-    public interface OnRemoveLocationListener {
+    public interface BookmarkedLocationsAdapterListener {
+
+        void onLocationClicked(BookmarkedLocation location);
 
         void onLocationRemoved(BookmarkedLocation location);
     }
+
+    private BookmarkedLocationsAdapterListener mBookmarkedLocationsAdapterListener;
     private List<BookmarkedLocation> mLocations = new ArrayList<>();
-    private OnRemoveLocationListener mOnRemoveLocationListener;
 
     @Override
     public int getItemCount() {
@@ -43,8 +46,16 @@ public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationIte
         holder.removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View view) {
-                if (mOnRemoveLocationListener != null) {
-                    mOnRemoveLocationListener.onLocationRemoved(location);
+                if (mBookmarkedLocationsAdapterListener != null) {
+                    mBookmarkedLocationsAdapterListener.onLocationRemoved(location);
+                }
+            }
+        });
+        holder.itemView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                if (mBookmarkedLocationsAdapterListener != null) {
+                    mBookmarkedLocationsAdapterListener.onLocationClicked(location);
                 }
             }
         });
@@ -57,8 +68,8 @@ public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationIte
                 LayoutInflater.from(parent.getContext()).inflate(R.layout.item_location, parent, false));
     }
 
-    public void setListener(final OnRemoveLocationListener listener) {
-        mOnRemoveLocationListener = listener;
+    public void setListener(final BookmarkedLocationsAdapterListener listener) {
+        mBookmarkedLocationsAdapterListener = listener;
     }
 
     public void setLocationItems(List<BookmarkedLocation> locations) {

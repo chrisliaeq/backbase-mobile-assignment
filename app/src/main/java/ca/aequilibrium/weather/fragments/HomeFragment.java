@@ -21,14 +21,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import ca.aequilibrium.weather.R;
 import ca.aequilibrium.weather.adapters.BookmarkedLocationsAdapter;
-import ca.aequilibrium.weather.adapters.BookmarkedLocationsAdapter.OnRemoveLocationListener;
+import ca.aequilibrium.weather.adapters.BookmarkedLocationsAdapter.BookmarkedLocationsAdapterListener;
 import ca.aequilibrium.weather.models.BookmarkedLocation;
 import ca.aequilibrium.weather.viewmodels.HomeViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -44,16 +46,29 @@ import java.util.List;
  * Copyright © 2018 Aequilibrium. All rights reserved.
  */
 public class HomeFragment extends Fragment implements OnMapLongClickListener,
-        Observer<List<BookmarkedLocation>>, OnRemoveLocationListener {
+        Observer<List<BookmarkedLocation>>, BookmarkedLocationsAdapterListener, OnMarkerClickListener {
+
+    public interface HomeFragmentListener {
+
+        void onBookmarkedLocationClicked(BookmarkedLocation location);
+    }
 
     public static final String TAG = HomeFragment.class.getSimpleName();
     private static final int REQUEST_LOCATION_PERMISSIONS = 102;
     private BookmarkedLocationsAdapter mBookmarkedLocationsAdapter;
-    private RecyclerView mBookmarkedLocationsList;
+    private HomeFragmentListener mHomeFragmentListener;
     private HomeViewModel mHomeViewModel;
     private HashMap<String, Marker> mLocationMarkerMap = new HashMap<>();
     private GoogleMap mMap;
     private MapView mMapView;
+
+    @Override
+    public void onAttach(final Context context) {
+        super.onAttach(context);
+        if (context instanceof HomeFragmentListener) {
+            mHomeFragmentListener = (HomeFragmentListener) context;
+        }
+    }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -79,10 +94,10 @@ public class HomeFragment extends Fragment implements OnMapLongClickListener,
             }
         });
 
-        mBookmarkedLocationsList = view.findViewById(R.id.bookmarked_locations_list);
-        mBookmarkedLocationsList
+        final RecyclerView bookmarkedLocationsList = view.findViewById(R.id.bookmarked_locations_list);
+        bookmarkedLocationsList
                 .setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        mBookmarkedLocationsList.setAdapter(mBookmarkedLocationsAdapter);
+        bookmarkedLocationsList.setAdapter(mBookmarkedLocationsAdapter);
         mHomeViewModel.getBookmarkedLocations().observe(this,
                 this);
 
@@ -124,9 +139,17 @@ public class HomeFragment extends Fragment implements OnMapLongClickListener,
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                             .position(
                                     new LatLng(bookmarkedLocation.getLatitude(), bookmarkedLocation.getLongitude())));
+                    marker.setTag(bookmarkedLocation);
                     mLocationMarkerMap.put(bookmarkedLocation.getId(), marker);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onLocationClicked(final BookmarkedLocation location) {
+        if (mHomeFragmentListener != null) {
+            mHomeFragmentListener.onBookmarkedLocationClicked(location);
         }
     }
 
@@ -164,10 +187,22 @@ public class HomeFragment extends Fragment implements OnMapLongClickListener,
     @Override
     public void onMapLongClick(final LatLng latLng) {
         mHomeViewModel.addLocation(latLng);
+        Toast.makeText(getContext(), R.string.location_bookmarked, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        BookmarkedLocation bookmarkedLocation = (BookmarkedLocation) marker.getTag();
+        if (bookmarkedLocation != null && mHomeFragmentListener != null) {
+            mHomeFragmentListener.onBookmarkedLocationClicked(bookmarkedLocation);
+        }
+        return true;
     }
 
     private void setupMap() {
         mMap.setOnMapLongClickListener(this);
+        mMap.setOnMarkerClickListener(this);
+
         if (ActivityCompat.checkSelfPermission(getContext(), permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(), permission.ACCESS_COARSE_LOCATION)

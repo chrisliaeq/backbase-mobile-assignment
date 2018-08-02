@@ -14,12 +14,4 @@
         android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="94dp"/>
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_marginTop="60dp"
-        android:layout_above="@+id/bookmarked_locations_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
 </RelativeLayout>

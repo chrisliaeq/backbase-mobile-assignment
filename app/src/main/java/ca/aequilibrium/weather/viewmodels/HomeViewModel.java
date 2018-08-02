@@ -3,7 +3,6 @@ package ca.aequilibrium.weather.viewmodels;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import ca.aequilibrium.weather.database.AppDatabase;
 import ca.aequilibrium.weather.models.BookmarkedLocation;
 import com.google.android.gms.maps.model.LatLng;
@@ -38,14 +37,4 @@ public class HomeViewModel extends AndroidViewModel {
         AppDatabase.getDatabase(getApplication().getApplicationContext()).getLocationDao()
                 .removeLocation(location);
     }
-
-    /*public void getCurrentWeather() {
-        GetCurrentForecastAsyncTask getRequestAsyncTask = new GetCurrentForecastAsyncTask(CurrentWeather.class);
-        getRequestAsyncTask.request(new GetRequestAsyncTask.RequestListener<CurrentWeather>() {
-            @Override
-            public void onComplete(CurrentWeather response) {
-
-            }
-        });
-    }*/
 }

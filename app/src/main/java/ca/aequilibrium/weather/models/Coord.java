@@ -7,22 +7,22 @@ package ca.aequilibrium.weather.models;
  */
 public class Coord {
 
-    private long lat;
-    private long lon;
+    private double lat;
+    private double lon;
 
-    public long getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(long lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public long getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public void setLon(long lon) {
+    public void setLon(double lon) {
         this.lon = lon;
     }
 }

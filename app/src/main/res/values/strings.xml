@@ -9,4 +9,15 @@
     <string name="remove_location_message">Are you sure you want to remove this bookmarked location?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="location_bookmarked">New location bookmarked!</string>
+    <string name="temperature">Temperature</string>
+    <string name="humidity">Humidity</string>
+    <string name="rain_chance">Chance of Rain</string>
+    <string name="wind">Wind</string>
+    <string name="metric_temp">%1$s \u2103</string>
+    <string name="imperial_temp">%1$s \u2109</string>
+    <string name="atm_pressure">%1$s hPa</string>
+    <string name="metric_speed">%1$s m/s</string>
+    <string name="imperial_speed">%1$s MPH</string>
+    <string name="percentage">%1$s %%</string>
 </resources>

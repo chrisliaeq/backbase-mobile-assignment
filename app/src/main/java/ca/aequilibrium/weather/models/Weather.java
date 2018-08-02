@@ -3,7 +3,7 @@ package ca.aequilibrium.weather.models;
 public class Weather {
 
     private int id;
-    private String clouds;
+    private Clouds clouds;
     private String description;
     private String icon;
 
@@ -15,11 +15,11 @@ public class Weather {
         this.id = id;
     }
 
-    public String getClouds() {
+    public Clouds getClouds() {
         return clouds;
     }
 
-    public void setClouds(String clouds) {
+    public void setClouds(Clouds clouds) {
         this.clouds = clouds;
     }
 

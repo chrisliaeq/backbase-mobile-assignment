@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import ca.aequilibrium.weather.R;
 import ca.aequilibrium.weather.fragments.CityFragment;
+import ca.aequilibrium.weather.fragments.CityFragment.CityFragmentListener;
 import ca.aequilibrium.weather.fragments.HomeFragment;
+import ca.aequilibrium.weather.fragments.HomeFragment.HomeFragmentListener;
+import ca.aequilibrium.weather.models.BookmarkedLocation;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomeFragmentListener, CityFragmentListener {
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -32,6 +35,20 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         setFragment(R.id.navigation_home);
+    }
+
+    @Override
+    public void onBackIconPressed() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onBookmarkedLocationClicked(final BookmarkedLocation location) {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container,
+                        CityFragment.newInstance(location.getLatitude(), location.getLongitude()), CityFragment.TAG)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void setFragment(final int itemId) {
@@ -56,13 +73,7 @@ public class MainActivity extends AppCompatActivity {
         if (fragment != null) {
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, fragment, fragmentTag)
-                    .addToBackStack(null)
                     .commit();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }
