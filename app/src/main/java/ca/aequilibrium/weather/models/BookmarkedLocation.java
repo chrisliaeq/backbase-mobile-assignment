@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
  * Copyright © 2018 Aequilibrium. All rights reserved.
  */
 @Entity
-public class Location {
+public class BookmarkedLocation {
 
     // Will be the toString() call on the LatLng model, to prevent potential duplication of locations.
     @PrimaryKey

@@ -4,9 +4,17 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.os.AsyncTask;
+import android.util.Log;
 import ca.aequilibrium.weather.database.AppDatabase;
-import ca.aequilibrium.weather.models.Location;
+import ca.aequilibrium.weather.models.BookmarkedLocation;
+import ca.aequilibrium.weather.models.CurrentWeather;
+import ca.aequilibrium.weather.network.GetCurrentForecastAsyncTask;
+import ca.aequilibrium.weather.network.GetRequestAsyncTask;
+import ca.aequilibrium.weather.network.NetworkConstants;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+
 import java.util.List;
 
 /**
@@ -15,14 +23,14 @@ import java.util.List;
  */
 public class HomeViewModel extends AndroidViewModel {
 
-    private MutableLiveData<List<Location>> mBookmarkedLocationData = new MutableLiveData<>();
+    private MutableLiveData<List<BookmarkedLocation>> mBookmarkedLocationData = new MutableLiveData<>();
 
     public HomeViewModel(Application application) {
         super(application);
     }
 
     public void addLocation(final LatLng latLng) {
-        Location location = new Location();
+        BookmarkedLocation location = new BookmarkedLocation();
         location.setId(latLng.toString());
         location.setLatitude(latLng.latitude);
         location.setLongitude(latLng.longitude);
@@ -30,8 +38,18 @@ public class HomeViewModel extends AndroidViewModel {
                 .addLocation(location);
     }
 
-    public LiveData<List<Location>> getBookmarkedLocations() {
+    public LiveData<List<BookmarkedLocation>> getBookmarkedLocations() {
         return AppDatabase.getDatabase(getApplication().getApplicationContext()).getLocationDao()
                 .getAllBookmarkedLocations();
+    }
+
+    public void getCurrentWeather() {
+        GetCurrentForecastAsyncTask getRequestAsyncTask = new GetCurrentForecastAsyncTask(CurrentWeather.class);
+        getRequestAsyncTask.request(new GetRequestAsyncTask.RequestListener<CurrentWeather>() {
+            @Override
+            public void onComplete(CurrentWeather response) {
+
+            }
+        });
     }
 }

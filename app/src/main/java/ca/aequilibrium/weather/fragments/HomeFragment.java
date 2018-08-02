@@ -12,11 +12,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import ca.aequilibrium.weather.R;
+import ca.aequilibrium.weather.adapters.BookmarkedLocationsAdapter;
+import ca.aequilibrium.weather.models.BookmarkedLocation;
 import ca.aequilibrium.weather.viewmodels.HomeViewModel;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
@@ -24,6 +32,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.List;
 
 /**
@@ -31,25 +41,28 @@ import java.util.List;
  * Copyright © 2018 Aequilibrium. All rights reserved.
  */
 public class HomeFragment extends Fragment implements OnMapLongClickListener,
-        Observer<List<ca.aequilibrium.weather.models.Location>> {
+        Observer<List<BookmarkedLocation>> {
 
     public static final String TAG = HomeFragment.class.getSimpleName();
-
     private static final int REQUEST_LOCATION_PERMISSIONS = 102;
+
     private HomeViewModel mHomeViewModel;
     private GoogleMap mMap;
     private MapView mMapView;
+    private RecyclerView mBookmarkedLocationsList;
+    private BookmarkedLocationsAdapter mBookmarkedLocationsAdapter;
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mHomeViewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
+        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        mBookmarkedLocationsAdapter = new BookmarkedLocationsAdapter();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         mMapView = view.findViewById(R.id.map_view);
@@ -61,6 +74,13 @@ public class HomeFragment extends Fragment implements OnMapLongClickListener,
                 setupMap();
             }
         });
+
+        SnapHelper snapHelper = new PagerSnapHelper();
+        mBookmarkedLocationsList = view.findViewById(R.id.bookmarked_locations_list);
+        mBookmarkedLocationsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mBookmarkedLocationsList.setAdapter(mBookmarkedLocationsAdapter);
+
+        snapHelper.attachToRecyclerView(mBookmarkedLocationsList);
 
         mHomeViewModel.getBookmarkedLocations().observe(this,
                 this);
@@ -82,7 +102,7 @@ public class HomeFragment extends Fragment implements OnMapLongClickListener,
 
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions,
-            @NonNull final int[] grantResults) {
+                                           @NonNull final int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 2) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED
@@ -93,8 +113,15 @@ public class HomeFragment extends Fragment implements OnMapLongClickListener,
     }
 
     @Override
-    public void onChanged(@Nullable final List<ca.aequilibrium.weather.models.Location> locations) {
+    public void onChanged(@Nullable final List<BookmarkedLocation> locations) {
+        mBookmarkedLocationsAdapter.setLocationItems(locations);
+        mBookmarkedLocationsList.smoothScrollToPosition(0);
 
+        if (mMap != null && locations != null) {
+            for (BookmarkedLocation bookmarkedLocation : locations) {
+                mMap.addMarker(new MarkerOptions().position(new LatLng(bookmarkedLocation.getLatitude(), bookmarkedLocation.getLongitude())));
+            }
+        }
     }
 
     @Override
@@ -106,6 +133,8 @@ public class HomeFragment extends Fragment implements OnMapLongClickListener,
     @Override
     public void onMapLongClick(final LatLng latLng) {
         mHomeViewModel.addLocation(latLng);
+        mMap.addMarker(new MarkerOptions().position(latLng));
+        mHomeViewModel.getCurrentWeather();
     }
 
     private void setupMap() {

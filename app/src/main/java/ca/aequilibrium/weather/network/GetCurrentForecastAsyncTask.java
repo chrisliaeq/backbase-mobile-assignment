@@ -1,19 +1,22 @@
 package ca.aequilibrium.weather.network;
 
-import android.os.AsyncTask;
 
-import com.google.android.gms.maps.model.LatLng;
+import android.os.AsyncTask;
+import ca.aequilibrium.weather.models.CurrentWeather;
 
 /**
  * Created by Chris Li on 2018-08-01.
  * Copyright © 2018 Aequilibrium. All rights reserved.
  */
-public class GetCurrentForecastAsyncTask extends AsyncTask<LatLng, Void, Void> {
+public class GetCurrentForecastAsyncTask extends GetRequestAsyncTask<CurrentWeather> {
 
+    public GetCurrentForecastAsyncTask(Class<CurrentWeather> clazz) {
+        super(clazz);
+    }
 
     @Override
-    protected Void doInBackground(LatLng... latLngs) {
-        LatLng latLng = latLngs[0];
-        return null;
+    public void request(RequestListener<CurrentWeather> listener) {
+        mListener = listener;
+        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "http://api.openweathermap.org/data/2.5/weather?lat=0&lon=0&appid=c6e381d8c7ff98f0fee43775817cf6ad&units=metric");
     }
 }
