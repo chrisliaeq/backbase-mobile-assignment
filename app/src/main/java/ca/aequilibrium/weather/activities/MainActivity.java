@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragmentListe
     }
 
     private void setFragment(final int itemId) {
+        // Remove CityFragment if present.
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        }
         switch (itemId) {
             case R.id.navigation_home:
                 if (mHomeFragment == null) {

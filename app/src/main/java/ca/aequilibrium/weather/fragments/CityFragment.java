@@ -3,6 +3,8 @@ package ca.aequilibrium.weather.fragments;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,13 +18,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import ca.aequilibrium.weather.R;
-import ca.aequilibrium.weather.adapters.ForecastAdapter;
+import ca.aequilibrium.weather.adapters.ForecastsAdapter;
 import ca.aequilibrium.weather.managers.SettingsManager;
 import ca.aequilibrium.weather.models.CurrentWeather;
 import ca.aequilibrium.weather.models.FiveDayForecast;
 import ca.aequilibrium.weather.models.Weather;
+import ca.aequilibrium.weather.network.GetBitmapFromUrlAsyncTask;
+import ca.aequilibrium.weather.network.GetBitmapFromUrlAsyncTask.BitmapListener;
+import ca.aequilibrium.weather.network.NetworkConstants;
 import ca.aequilibrium.weather.viewmodels.CityViewModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +51,15 @@ public class CityFragment extends Fragment {
     private CityViewModel mCityViewModel;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private TextView mDescriptionText;
-    private ForecastAdapter mForecastAdapter;
+    private ForecastsAdapter mForecastAdapter;
     private TextView mHumidityText;
     private TextView mMainText;
     private TextView mRainChanceText;
     private TextView mTemperatureText;
     private Toolbar mToolbar;
     private TextView mWindText;
+    private ImageView mCollapsedIcon;
+    private TextView mTempDiffText;
 
     public static CityFragment newInstance(double latitude, double longitude) {
         CityFragment cityFragment = new CityFragment();
@@ -82,7 +90,7 @@ public class CityFragment extends Fragment {
             double longitude = getArguments().getDouble(LONGITUDE_KEY);
             mCityViewModel.setCoordinates(latitude, longitude);
         }
-        mForecastAdapter = new ForecastAdapter();
+        mForecastAdapter = new ForecastsAdapter();
     }
 
     @Nullable
@@ -103,11 +111,13 @@ public class CityFragment extends Fragment {
 
         mCollapsingToolbarLayout = view.findViewById(R.id.collapsing_toolbar);
         mTemperatureText = view.findViewById(R.id.temperature_value_text);
+        mTempDiffText = view.findViewById(R.id.temp_diff_text);
         mWindText = view.findViewById(R.id.wind_value_text);
         mHumidityText = view.findViewById(R.id.humidity_value_text);
         mRainChanceText = view.findViewById(R.id.rain_chance_value_text);
         mMainText = view.findViewById(R.id.main_text);
         mDescriptionText = view.findViewById(R.id.description_text);
+        mCollapsedIcon = view.findViewById(R.id.collapsing_icon);
 
         final RecyclerView forecastList = view.findViewById(R.id.forecast_list);
         forecastList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -135,6 +145,8 @@ public class CityFragment extends Fragment {
             mToolbar.setTitle(currentWeather.getName());
             mCollapsingToolbarLayout.setTitle(currentWeather.getName());
 
+            mTempDiffText
+                    .setText(getString(R.string.degrees, String.valueOf(currentWeather.getMain().getTempMax()), String.valueOf(currentWeather.getMain().getTempMin())));
             if (SettingsManager.getInstance(getContext()).isMetric()) {
                 mTemperatureText
                         .setText(getString(R.string.metric_temp, String.valueOf(currentWeather.getMain().getTemp())));
@@ -162,7 +174,18 @@ public class CityFragment extends Fragment {
             }
             mMainText.setText(TextUtils.join(", ", weatherNames));
             if (!currentWeather.getWeather().isEmpty()) {
-                mDescriptionText.setText(currentWeather.getWeather().get(0).getDescription());
+                Weather weather = currentWeather.getWeather().get(0);
+                mDescriptionText.setText(weather.getDescription());
+
+                String iconUrl = NetworkConstants.BASE_ICON_URL + weather.getIcon() + ".png";
+                GetBitmapFromUrlAsyncTask getBitmapFromUrlAsyncTask = new GetBitmapFromUrlAsyncTask();
+                getBitmapFromUrlAsyncTask.setBitmapListener(new BitmapListener() {
+                    @Override
+                    public void onComplete(final Bitmap bitmap) {
+                        mCollapsedIcon.setImageBitmap(bitmap);
+                    }
+                });
+                getBitmapFromUrlAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, iconUrl);
             }
         }
     }

@@ -6,6 +6,6 @@ public class NetworkConstants {
     public static final String BASE_URL = "https://api.openweathermap.org/data/2.5";
     public static final String FORECAST = "/forecast";
     public static final String WEATHER = "/weather";
-
+    public static final String BASE_ICON_URL = "https://openweathermap.org/img/w/";
 
 }

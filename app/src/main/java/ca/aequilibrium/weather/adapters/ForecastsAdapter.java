@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ca.aequilibrium.weather.R;
-import ca.aequilibrium.weather.adapters.ForecastAdapter.ForecastItemViewHolder;
+import ca.aequilibrium.weather.adapters.ForecastsAdapter.ForecastItemViewHolder;
 import ca.aequilibrium.weather.managers.SettingsManager;
 import ca.aequilibrium.weather.models.Forecast;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Chris Li on 2018-08-02.
  * Copyright © 2018 Aequilibrium. All rights reserved.
  */
-public class ForecastAdapter extends RecyclerView.Adapter<ForecastItemViewHolder> {
+public class ForecastsAdapter extends RecyclerView.Adapter<ForecastItemViewHolder> {
 
     static class ForecastItemViewHolder extends RecyclerView.ViewHolder {
 

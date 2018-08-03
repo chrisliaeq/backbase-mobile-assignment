@@ -27,4 +27,5 @@
     <string name="clear">Clear</string>
     <string name="volume_mm">%1$s mm</string>
     <string name="clear_bookmarks_message">Are you sure you want to clear all your bookmarked locations?</string>
+    <string name="degrees">%1$s &#176; / %2$s &#176;</string>
 </resources>
