@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ca.aequilibrium.weather.R;
+import ca.aequilibrium.weather.adapters.ForecastAdapter;
 import ca.aequilibrium.weather.managers.SettingsManager;
 import ca.aequilibrium.weather.models.CurrentWeather;
 import ca.aequilibrium.weather.models.FiveDayForecast;
@@ -48,6 +51,7 @@ public class CityFragment extends Fragment {
     private TextView mWindText;
     private TextView mMainText;
     private TextView mDescriptionText;
+    private ForecastAdapter mForecastAdapter;
 
     public static CityFragment newInstance(double latitude, double longitude) {
         CityFragment cityFragment = new CityFragment();
@@ -78,6 +82,7 @@ public class CityFragment extends Fragment {
             double longitude = getArguments().getDouble(LONGITUDE_KEY);
             mCityViewModel.setCoordinates(latitude, longitude);
         }
+        mForecastAdapter = new ForecastAdapter();
     }
 
     @Nullable
@@ -103,6 +108,10 @@ public class CityFragment extends Fragment {
         mRainChanceText = view.findViewById(R.id.rain_chance_value_text);
         mMainText = view.findViewById(R.id.main_text);
         mDescriptionText = view.findViewById(R.id.description_text);
+
+        final RecyclerView forecastList = view.findViewById(R.id.forecast_list);
+        forecastList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        forecastList.setAdapter(mForecastAdapter);
 
         mCityViewModel.getCurrentWeather().observe(this, new Observer<CurrentWeather>() {
             @Override
@@ -138,22 +147,25 @@ public class CityFragment extends Fragment {
             mHumidityText
                     .setText(getString(R.string.percentage, String.valueOf(currentWeather.getMain().getHumidity())));
             if (currentWeather.getRain() != null) {
-                mRainChanceText.setText(getString(R.string.volume_mm, String.valueOf(currentWeather.getRain().getVolume())));   
+                mRainChanceText.setText(getString(R.string.volume_mm, String.valueOf(currentWeather.getRain().getVolume())));
             } else {
                 mRainChanceText.setText(getString(R.string.volume_mm, String.valueOf(0)));
             }
 
             List<String> weatherNames = new ArrayList<>();
             for (Weather weather : currentWeather.getWeather()) {
-                weatherNames.add(weather.getDescription());
+                weatherNames.add(weather.getMain());
             }
             mMainText.setText(TextUtils.join(", ", weatherNames));
+            if (!currentWeather.getWeather().isEmpty()) {
+                mDescriptionText.setText(currentWeather.getWeather().get(0).getDescription());
+            }
         }
     }
 
     private void setFiveDayForecastUI(final FiveDayForecast fiveDayForecast) {
         if (fiveDayForecast != null) {
-
+            mForecastAdapter.setForecasts(fiveDayForecast.getList());
         }
     }
 }

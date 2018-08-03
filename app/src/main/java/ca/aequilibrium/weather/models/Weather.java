@@ -6,6 +6,7 @@ public class Weather {
     private String description;
     private String icon;
     private int id;
+    private String main;
 
     public Clouds getClouds() {
         return clouds;
@@ -37,5 +38,13 @@ public class Weather {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getMain() {
+        return main;
+    }
+
+    public void setMain(final String main) {
+        this.main = main;
     }
 }

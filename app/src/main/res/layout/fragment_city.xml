@@ -18,8 +18,8 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
-            app:titleEnabled="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="true">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -30,31 +30,31 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
             <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginTop="?attr/actionBarSize"
-                android:paddingTop="10dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:paddingTop="10dp">
 
                 <TextView
                     android:id="@+id/main_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary_light"
-                    android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/primary_light"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/description_text"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary_light"
-                    android:layout_below="@+id/main_text"
-                    android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/main_text"
+                    android:textColor="@color/primary_light"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -65,117 +65,133 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/temperature"
-                    android:textSize="18sp"
-                    android:fontFamily="sans-serif-light"
-                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/temperature"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/temperature_value_text"
-                    android:textSize="20sp"
-                    android:textColor="@color/primary_dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textColor="@color/primary_dark"
+                    android:textSize="20sp" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/humidity"
-                    android:textSize="18sp"
-                    android:fontFamily="sans-serif-light"
-                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/humidity"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/humidity_value_text"
-                    android:textSize="20sp"
-                    android:textColor="@color/primary_dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textColor="@color/primary_dark"
+                    android:textSize="20sp" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/rain_volume"
-                    android:textSize="18sp"
-                    android:fontFamily="sans-serif-light"
-                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/rain_volume"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/rain_chance_value_text"
-                    android:textSize="20sp"
-                    android:textColor="@color/primary_dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textColor="@color/primary_dark"
+                    android:textSize="20sp" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:text="@string/wind"
-                    android:textSize="18sp"
-                    android:fontFamily="sans-serif-light"
-                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/wind"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/wind_value_text"
-                    android:textSize="20sp"
-                    android:textColor="@color/primary_dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textColor="@color/primary_dark"
+                    android:textSize="20sp" />
 
             </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/forecast_list"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -6,7 +6,7 @@ import java.util.List;
 public class FiveDayForecast {
 
     private City city;
-    private List<Weather> list = new ArrayList<>();
+    private List<Forecast> list = new ArrayList<>();
 
     public City getCity() {
         return city;
@@ -14,5 +14,13 @@ public class FiveDayForecast {
 
     public void setCity(final City city) {
         this.city = city;
+    }
+
+    public List<Forecast> getList() {
+        return list;
+    }
+
+    public void setList(final List<Forecast> list) {
+        this.list = list;
     }
 }
