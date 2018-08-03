@@ -44,14 +44,14 @@ public class CityFragment extends Fragment {
     private CityFragmentListener mCityFragmentListener;
     private CityViewModel mCityViewModel;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private TextView mDescriptionText;
+    private ForecastAdapter mForecastAdapter;
     private TextView mHumidityText;
+    private TextView mMainText;
     private TextView mRainChanceText;
     private TextView mTemperatureText;
     private Toolbar mToolbar;
     private TextView mWindText;
-    private TextView mMainText;
-    private TextView mDescriptionText;
-    private ForecastAdapter mForecastAdapter;
 
     public static CityFragment newInstance(double latitude, double longitude) {
         CityFragment cityFragment = new CityFragment();
@@ -138,16 +138,20 @@ public class CityFragment extends Fragment {
             if (SettingsManager.getInstance(getContext()).isMetric()) {
                 mTemperatureText
                         .setText(getString(R.string.metric_temp, String.valueOf(currentWeather.getMain().getTemp())));
-                mWindText.setText(getString(R.string.metric_speed, String.valueOf(currentWeather.getWind().getSpeed())));
+                mWindText.setText(
+                        getString(R.string.metric_speed, String.valueOf(currentWeather.getWind().getSpeed())));
             } else {
                 mTemperatureText
-                        .setText(getString(R.string.imperial_temp, String.valueOf(currentWeather.getMain().getTemp())));
-                mWindText.setText(getString(R.string.imperial_speed, String.valueOf(currentWeather.getWind().getSpeed())));
+                        .setText(getString(R.string.imperial_temp,
+                                String.valueOf(currentWeather.getMain().getTemp())));
+                mWindText.setText(
+                        getString(R.string.imperial_speed, String.valueOf(currentWeather.getWind().getSpeed())));
             }
             mHumidityText
                     .setText(getString(R.string.percentage, String.valueOf(currentWeather.getMain().getHumidity())));
             if (currentWeather.getRain() != null) {
-                mRainChanceText.setText(getString(R.string.volume_mm, String.valueOf(currentWeather.getRain().getVolume())));
+                mRainChanceText
+                        .setText(getString(R.string.volume_mm, String.valueOf(currentWeather.getRain().getVolume())));
             } else {
                 mRainChanceText.setText(getString(R.string.volume_mm, String.valueOf(0)));
             }

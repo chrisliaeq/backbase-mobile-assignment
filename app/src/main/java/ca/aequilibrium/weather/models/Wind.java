@@ -2,16 +2,8 @@ package ca.aequilibrium.weather.models;
 
 public class Wind {
 
-    private double speed;
     private double deg;
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
+    private double speed;
 
     public double getDeg() {
         return deg;
@@ -19,5 +11,13 @@ public class Wind {
 
     public void setDeg(double deg) {
         this.deg = deg;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 }

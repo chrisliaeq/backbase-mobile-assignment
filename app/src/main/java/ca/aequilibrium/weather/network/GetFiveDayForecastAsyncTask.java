@@ -1,7 +1,6 @@
 package ca.aequilibrium.weather.network;
 
 
-
 import ca.aequilibrium.weather.BuildConfig;
 import ca.aequilibrium.weather.models.FiveDayForecast;
 
@@ -12,11 +11,12 @@ import ca.aequilibrium.weather.models.FiveDayForecast;
  */
 public class GetFiveDayForecastAsyncTask extends GetRequestAsyncTask<FiveDayForecast> {
 
+    private boolean mIsMetric;
     private double mLatitude;
     private double mLongitude;
-    private boolean mIsMetric;
 
-    public GetFiveDayForecastAsyncTask(boolean isMetric, double latitude, double longitude, Class<FiveDayForecast> clazz) {
+    public GetFiveDayForecastAsyncTask(boolean isMetric, double latitude, double longitude,
+            Class<FiveDayForecast> clazz) {
         super(clazz);
         mLatitude = latitude;
         mLongitude = longitude;

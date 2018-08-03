@@ -4,25 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class Main {
 
-    private double temp;
-    private int humidity;
-    private double pressure;
-    @SerializedName("temp_min")
-    private double tempMin;
-    @SerializedName("temp_max")
-    private double tempMax;
-    @SerializedName("sea_level")
-    private double seaLevel;
     @SerializedName("grnd_level")
     private double groundLevel;
-
-    public double getSeaLevel() {
-        return seaLevel;
-    }
-
-    public void setSeaLevel(double seaLevel) {
-        this.seaLevel = seaLevel;
-    }
+    private int humidity;
+    private double pressure;
+    @SerializedName("sea_level")
+    private double seaLevel;
+    private double temp;
+    @SerializedName("temp_max")
+    private double tempMax;
+    @SerializedName("temp_min")
+    private double tempMin;
 
     public double getGroundLevel() {
         return groundLevel;
@@ -30,14 +22,6 @@ public class Main {
 
     public void setGroundLevel(double groundLevel) {
         this.groundLevel = groundLevel;
-    }
-
-    public double getTemp() {
-        return temp;
-    }
-
-    public void setTemp(double temp) {
-        this.temp = temp;
     }
 
     public int getHumidity() {
@@ -56,12 +40,20 @@ public class Main {
         this.pressure = pressure;
     }
 
-    public double getTempMin() {
-        return tempMin;
+    public double getSeaLevel() {
+        return seaLevel;
     }
 
-    public void setTempMin(double tempMin) {
-        this.tempMin = tempMin;
+    public void setSeaLevel(double seaLevel) {
+        this.seaLevel = seaLevel;
+    }
+
+    public double getTemp() {
+        return temp;
+    }
+
+    public void setTemp(double temp) {
+        this.temp = temp;
     }
 
     public double getTempMax() {
@@ -70,5 +62,13 @@ public class Main {
 
     public void setTempMax(double tempMax) {
         this.tempMax = tempMax;
+    }
+
+    public double getTempMin() {
+        return tempMin;
+    }
+
+    public void setTempMin(double tempMin) {
+        this.tempMin = tempMin;
     }
 }

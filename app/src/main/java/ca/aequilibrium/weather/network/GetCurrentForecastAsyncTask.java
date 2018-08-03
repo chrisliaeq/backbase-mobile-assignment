@@ -10,11 +10,12 @@ import ca.aequilibrium.weather.models.CurrentWeather;
  */
 public class GetCurrentForecastAsyncTask extends GetRequestAsyncTask<CurrentWeather> {
 
+    private boolean mIsMetric;
     private double mLatitude;
     private double mLongitude;
-    private boolean mIsMetric;
 
-    public GetCurrentForecastAsyncTask(boolean isMetric, double latitude, double longitude, Class<CurrentWeather> clazz) {
+    public GetCurrentForecastAsyncTask(boolean isMetric, double latitude, double longitude,
+            Class<CurrentWeather> clazz) {
         super(clazz);
         mLatitude = latitude;
         mLongitude = longitude;

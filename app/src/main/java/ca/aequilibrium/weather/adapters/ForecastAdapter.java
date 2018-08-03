@@ -21,6 +21,21 @@ import java.util.List;
  */
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastItemViewHolder> {
 
+    static class ForecastItemViewHolder extends RecyclerView.ViewHolder {
+
+        TextView dayText;
+        TextView tempText;
+        TextView timeText;
+        TextView weatherText;
+
+        public ForecastItemViewHolder(final View itemView) {
+            super(itemView);
+            dayText = itemView.findViewById(R.id.day_text);
+            timeText = itemView.findViewById(R.id.time_text);
+            tempText = itemView.findViewById(R.id.main_temp_text);
+            weatherText = itemView.findViewById(R.id.main_text);
+        }
+    }
     private List<Forecast> mForecasts = new ArrayList<>();
 
     @Override
@@ -38,9 +53,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastItemViewHolder
         holder.dayText.setText(day);
         holder.timeText.setText(time);
         if (SettingsManager.getInstance(context).isMetric()) {
-            holder.tempText.setText(context.getString(R.string.metric_temp, String.valueOf(forecast.getMain().getTemp())));
+            holder.tempText
+                    .setText(context.getString(R.string.metric_temp, String.valueOf(forecast.getMain().getTemp())));
         } else {
-            holder.tempText.setText(context.getString(R.string.imperial_temp, String.valueOf(forecast.getMain().getTemp())));
+            holder.tempText
+                    .setText(context.getString(R.string.imperial_temp, String.valueOf(forecast.getMain().getTemp())));
         }
         if (!forecast.getWeather().isEmpty()) {
             holder.weatherText.setText(forecast.getWeather().get(0).getMain());
@@ -60,22 +77,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastItemViewHolder
         mForecasts.clear();
         mForecasts.addAll(list);
         notifyDataSetChanged();
-    }
-
-    static class ForecastItemViewHolder extends RecyclerView.ViewHolder {
-
-        TextView dayText;
-        TextView timeText;
-        TextView tempText;
-        TextView weatherText;
-
-        public ForecastItemViewHolder(final View itemView) {
-            super(itemView);
-            dayText = itemView.findViewById(R.id.day_text);
-            timeText = itemView.findViewById(R.id.time_text);
-            tempText = itemView.findViewById(R.id.main_temp_text);
-            weatherText = itemView.findViewById(R.id.main_text);
-        }
     }
 
 }

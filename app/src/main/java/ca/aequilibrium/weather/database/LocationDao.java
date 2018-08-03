@@ -7,7 +7,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import ca.aequilibrium.weather.models.BookmarkedLocation;
-
 import java.util.List;
 
 /**
@@ -17,15 +16,12 @@ import java.util.List;
 @Dao
 public interface LocationDao {
 
-    @Query("SELECT * FROM BookmarkedLocation")
-    LiveData<List<BookmarkedLocation>> getAllBookmarkedLocations();
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addLocation(BookmarkedLocation location);
-
-    @Delete
-    void removeLocation(BookmarkedLocation location);
-
+    @Query("SELECT * FROM BookmarkedLocation")
+    LiveData<List<BookmarkedLocation>> getAllBookmarkedLocations();
     @Query("DELETE FROM BookmarkedLocation")
     void removeAll();
+    @Delete
+    void removeLocation(BookmarkedLocation location);
 }

@@ -185,13 +185,13 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/forecast_list"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="150dp" />
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

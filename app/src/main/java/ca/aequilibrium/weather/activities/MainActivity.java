@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import ca.aequilibrium.weather.R;
@@ -18,7 +17,10 @@ import ca.aequilibrium.weather.models.BookmarkedLocation;
 
 public class MainActivity extends AppCompatActivity implements HomeFragmentListener, CityFragmentListener {
 
-
+    private HelpFragment mHelpFragment = null;
+    private HomeFragment mHomeFragment = null;
+    private Fragment mPreviousFragment = null;
+    private SettingsFragment mSettingsFragment = null;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -53,37 +55,55 @@ public class MainActivity extends AppCompatActivity implements HomeFragmentListe
                 .commit();
     }
 
+    private void addFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    private void displayFragment(Fragment fragment) {
+        if (mPreviousFragment != null) {
+            hideFragment(mPreviousFragment);
+        }
+        showFragment(fragment);
+        mPreviousFragment = fragment;
+    }
+
+    private void hideFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .hide(fragment)
+                .commit();
+    }
+
     private void setFragment(final int itemId) {
-        Fragment fragment = null;
-        String fragmentTag = "";
-        FragmentManager fragmentManager = getSupportFragmentManager();
         switch (itemId) {
             case R.id.navigation_home:
-                fragmentTag = HomeFragment.TAG;
-                fragment = fragmentManager.findFragmentByTag(fragmentTag);
-                if (fragment == null) {
-                    fragment = new HomeFragment();
+                if (mHomeFragment == null) {
+                    mHomeFragment = new HomeFragment();
+                    addFragment(mHomeFragment);
                 }
+                displayFragment(mHomeFragment);
                 break;
             case R.id.navigation_settings:
-                fragmentTag = SettingsFragment.TAG;
-                fragment = fragmentManager.findFragmentByTag(fragmentTag);
-                if (fragment == null) {
-                    fragment = new SettingsFragment();
+                if (mSettingsFragment == null) {
+                    mSettingsFragment = new SettingsFragment();
+                    addFragment(mSettingsFragment);
                 }
+                displayFragment(mSettingsFragment);
                 break;
             case R.id.navigation_help:
-                fragmentTag = HelpFragment.TAG;
-                fragment = fragmentManager.findFragmentByTag(fragmentTag);
-                if (fragment == null) {
-                    fragment = new HelpFragment();
+                if (mHelpFragment == null) {
+                    mHelpFragment = new HelpFragment();
+                    addFragment(mHelpFragment);
                 }
+                displayFragment(mHelpFragment);
                 break;
         }
-        if (fragment != null) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragment, fragmentTag)
-                    .commit();
-        }
+    }
+
+    private void showFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .show(fragment)
+                .commit();
     }
 }

@@ -26,16 +26,15 @@ public class SettingsManager {
         mSharedPreferences = context.getSharedPreferences(USER_SETTINGS, Context.MODE_PRIVATE);
     }
 
+    public boolean isMetric() {
+        return mSharedPreferences.getBoolean(IS_METRIC_SETTING_KEY, true);
+    }
 
     public void setIsMetric(boolean isMetric) {
         mSharedPreferences
                 .edit()
                 .putBoolean(IS_METRIC_SETTING_KEY, isMetric)
                 .apply();
-    }
-
-    public boolean isMetric() {
-        return mSharedPreferences.getBoolean(IS_METRIC_SETTING_KEY, true);
     }
 
 }

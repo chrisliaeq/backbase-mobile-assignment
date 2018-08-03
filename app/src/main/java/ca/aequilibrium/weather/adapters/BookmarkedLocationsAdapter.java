@@ -22,65 +22,6 @@ import java.util.List;
  */
 public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationItemViewHolder> {
 
-    public interface BookmarkedLocationsAdapterListener {
-
-        void onLocationClicked(BookmarkedLocation location);
-
-        void onLocationRemoved(BookmarkedLocation location);
-    }
-
-    private BookmarkedLocationsAdapterListener mBookmarkedLocationsAdapterListener;
-    private List<BookmarkedLocation> mLocations = new ArrayList<>();
-
-    @Override
-    public int getItemCount() {
-        return mLocations.size();
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull final LocationItemViewHolder holder, final int position) {
-        final BookmarkedLocation location = mLocations.get(position);
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        holder.latitudeText.setText(decimalFormat.format(location.getLatitude()));
-        holder.longitudeText.setText(decimalFormat.format(location.getLongitude()));
-        holder.cityText.setText(location.getCityName());
-        holder.removeButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                if (mBookmarkedLocationsAdapterListener != null) {
-                    mBookmarkedLocationsAdapterListener.onLocationRemoved(location);
-                }
-            }
-        });
-        holder.itemView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                if (mBookmarkedLocationsAdapterListener != null) {
-                    mBookmarkedLocationsAdapterListener.onLocationClicked(location);
-                }
-            }
-        });
-    }
-
-    @NonNull
-    @Override
-    public LocationItemViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        return new LocationItemViewHolder(
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_location, parent, false));
-    }
-
-    public void setListener(final BookmarkedLocationsAdapterListener listener) {
-        mBookmarkedLocationsAdapterListener = listener;
-    }
-
-    public void setLocationItems(List<BookmarkedLocation> locations) {
-        LocationDiffCallback locationDiffCallback = new LocationDiffCallback(mLocations, locations);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(locationDiffCallback);
-        mLocations.clear();
-        mLocations.addAll(locations);
-        diffResult.dispatchUpdatesTo(this);
-    }
-
     static class LocationItemViewHolder extends RecyclerView.ViewHolder {
 
         TextView cityText;
@@ -131,6 +72,63 @@ public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationIte
         public int getOldListSize() {
             return oldListData.size();
         }
+    }
+    public interface BookmarkedLocationsAdapterListener {
+
+        void onLocationClicked(BookmarkedLocation location);
+
+        void onLocationRemoved(BookmarkedLocation location);
+    }
+    private BookmarkedLocationsAdapterListener mBookmarkedLocationsAdapterListener;
+    private List<BookmarkedLocation> mLocations = new ArrayList<>();
+
+    @Override
+    public int getItemCount() {
+        return mLocations.size();
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final LocationItemViewHolder holder, final int position) {
+        final BookmarkedLocation location = mLocations.get(position);
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        holder.latitudeText.setText(decimalFormat.format(location.getLatitude()));
+        holder.longitudeText.setText(decimalFormat.format(location.getLongitude()));
+        holder.cityText.setText(location.getCityName());
+        holder.removeButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                if (mBookmarkedLocationsAdapterListener != null) {
+                    mBookmarkedLocationsAdapterListener.onLocationRemoved(location);
+                }
+            }
+        });
+        holder.itemView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                if (mBookmarkedLocationsAdapterListener != null) {
+                    mBookmarkedLocationsAdapterListener.onLocationClicked(location);
+                }
+            }
+        });
+    }
+
+    @NonNull
+    @Override
+    public LocationItemViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
+        return new LocationItemViewHolder(
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.item_location, parent, false));
+    }
+
+    public void setListener(final BookmarkedLocationsAdapterListener listener) {
+        mBookmarkedLocationsAdapterListener = listener;
+    }
+
+    public void setLocationItems(List<BookmarkedLocation> locations) {
+        LocationDiffCallback locationDiffCallback = new LocationDiffCallback(mLocations, locations);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(locationDiffCallback);
+        mLocations.clear();
+        mLocations.addAll(locations);
+        diffResult.dispatchUpdatesTo(this);
     }
 
 }
