@@ -49,17 +49,17 @@ public class CityFragment extends Fragment {
     private static final String LONGITUDE_KEY = "longitude_key";
     private CityFragmentListener mCityFragmentListener;
     private CityViewModel mCityViewModel;
+    private ImageView mCollapsedIcon;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private TextView mDescriptionText;
     private ForecastsAdapter mForecastAdapter;
     private TextView mHumidityText;
     private TextView mMainText;
     private TextView mRainChanceText;
+    private TextView mTempDiffText;
     private TextView mTemperatureText;
     private Toolbar mToolbar;
     private TextView mWindText;
-    private ImageView mCollapsedIcon;
-    private TextView mTempDiffText;
 
     public static CityFragment newInstance(double latitude, double longitude) {
         CityFragment cityFragment = new CityFragment();
@@ -146,7 +146,8 @@ public class CityFragment extends Fragment {
             mCollapsingToolbarLayout.setTitle(currentWeather.getName());
 
             mTempDiffText
-                    .setText(getString(R.string.degrees, String.valueOf(currentWeather.getMain().getTempMax()), String.valueOf(currentWeather.getMain().getTempMin())));
+                    .setText(getString(R.string.degrees, String.valueOf(currentWeather.getMain().getTempMax()),
+                            String.valueOf(currentWeather.getMain().getTempMin())));
             if (SettingsManager.getInstance(getContext()).isMetric()) {
                 mTemperatureText
                         .setText(getString(R.string.metric_temp, String.valueOf(currentWeather.getMain().getTemp())));

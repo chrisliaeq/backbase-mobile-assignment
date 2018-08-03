@@ -57,6 +57,44 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/humidity_icon"
+            android:layout_marginTop="10dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_below="@+id/main_text"
+            android:src="@drawable/ic_humidity" />
+
+        <TextView
+            android:id="@+id/humidity_percentage_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/humidity_icon"
+            android:layout_alignTop="@+id/humidity_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/humidity_icon"
+            android:gravity="center"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/wind_icon"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_below="@+id/humidity_icon"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_wind" />
+
+        <TextView
+            android:id="@+id/wind_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_alignBottom="@+id/wind_icon"
+            android:layout_alignTop="@id/wind_icon"
+            android:layout_toRightOf="@+id/wind_icon"
+            android:gravity="center"
+            android:textSize="12sp" />
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

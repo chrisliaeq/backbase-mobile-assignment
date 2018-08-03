@@ -11,12 +11,11 @@ import java.net.URL;
 
 public class GetBitmapFromUrlAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
-    private static final String TAG = GetBitmapFromUrlAsyncTask.class.getSimpleName();
-
     public interface BitmapListener {
+
         void onComplete(Bitmap bitmap);
     }
-
+    private static final String TAG = GetBitmapFromUrlAsyncTask.class.getSimpleName();
     private BitmapListener mBitmapListener;
 
     public void setBitmapListener(BitmapListener listener) {

@@ -3,6 +3,12 @@ package ca.aequilibrium.weather.managers;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 
+/**
+ * Currently uses and in-memory cache which should suffice.
+ *
+ * Created by Chris Li on 2018-08-02.
+ * Copyright © 2018 Aequilibrium. All rights reserved.
+ */
 public class CacheManager {
 
     private static CacheManager INSTANCE = null;

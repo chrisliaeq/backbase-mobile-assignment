@@ -18,10 +18,13 @@ public interface LocationDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addLocation(BookmarkedLocation location);
+
     @Query("SELECT * FROM BookmarkedLocation")
     LiveData<List<BookmarkedLocation>> getAllBookmarkedLocations();
+
     @Query("DELETE FROM BookmarkedLocation")
     void removeAll();
+
     @Delete
     void removeLocation(BookmarkedLocation location);
 }

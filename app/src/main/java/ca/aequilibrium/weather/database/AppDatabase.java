@@ -15,16 +15,16 @@ import ca.aequilibrium.weather.models.BookmarkedLocation;
 @TypeConverters({DataTypeConverters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
-    private static AppDatabase sInstance;
+    private static AppDatabase INSTANCE;
 
     public static AppDatabase getDatabase(Context context) {
-        if (sInstance == null) {
-            sInstance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "weather_db")
-                    .allowMainThreadQueries()
+        if (INSTANCE == null) {
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "weather_db")
+                    .allowMainThreadQueries() // Done for simplicity, normally would run all queries off the main thread.
                     .fallbackToDestructiveMigration()
                     .build();
         }
-        return sInstance;
+        return INSTANCE;
     }
 
     public abstract LocationDao getLocationDao();

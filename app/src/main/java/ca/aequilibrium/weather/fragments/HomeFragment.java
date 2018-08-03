@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -137,14 +138,19 @@ public class HomeFragment extends Fragment implements OnMapLongClickListener,
         mBookmarkedLocationsAdapter.setLocationItems(locations);
 
         if (mMap != null && locations != null) {
-            for (BookmarkedLocation bookmarkedLocation : locations) {
-                if (!mLocationMarkerMap.containsKey(bookmarkedLocation.getId())) {
-                    Marker marker = mMap.addMarker(new MarkerOptions()
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                            .position(
-                                    new LatLng(bookmarkedLocation.getLatitude(), bookmarkedLocation.getLongitude())));
-                    marker.setTag(bookmarkedLocation);
-                    mLocationMarkerMap.put(bookmarkedLocation.getId(), marker);
+            if (locations.isEmpty()) {
+                clearMarkers();
+            } else {
+                for (BookmarkedLocation bookmarkedLocation : locations) {
+                    if (!mLocationMarkerMap.containsKey(bookmarkedLocation.getId())) {
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                                .position(
+                                        new LatLng(bookmarkedLocation.getLatitude(),
+                                                bookmarkedLocation.getLongitude())));
+                        marker.setTag(bookmarkedLocation);
+                        mLocationMarkerMap.put(bookmarkedLocation.getId(), marker);
+                    }
                 }
             }
         }
@@ -213,6 +219,13 @@ public class HomeFragment extends Fragment implements OnMapLongClickListener,
             mHomeFragmentListener.onBookmarkedLocationClicked(bookmarkedLocation);
         }
         return true;
+    }
+
+    private void clearMarkers() {
+        List<Marker> markers = new ArrayList<>(mLocationMarkerMap.values());
+        for (Marker marker : markers) {
+            marker.remove();
+        }
     }
 
     private void setupMap() {

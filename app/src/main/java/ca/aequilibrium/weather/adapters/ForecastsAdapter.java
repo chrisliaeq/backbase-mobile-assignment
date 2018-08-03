@@ -21,21 +21,6 @@ import java.util.List;
  */
 public class ForecastsAdapter extends RecyclerView.Adapter<ForecastItemViewHolder> {
 
-    static class ForecastItemViewHolder extends RecyclerView.ViewHolder {
-
-        TextView dayText;
-        TextView tempText;
-        TextView timeText;
-        TextView weatherText;
-
-        public ForecastItemViewHolder(final View itemView) {
-            super(itemView);
-            dayText = itemView.findViewById(R.id.day_text);
-            timeText = itemView.findViewById(R.id.time_text);
-            tempText = itemView.findViewById(R.id.main_temp_text);
-            weatherText = itemView.findViewById(R.id.main_text);
-        }
-    }
     private List<Forecast> mForecasts = new ArrayList<>();
 
     @Override
@@ -64,6 +49,14 @@ public class ForecastsAdapter extends RecyclerView.Adapter<ForecastItemViewHolde
         } else {
             holder.weatherText.setText(null);
         }
+
+        if (SettingsManager.getInstance(context).isMetric()) {
+            holder.windText.setText(context.getString(R.string.metric_speed, String.valueOf(forecast.getWind().getSpeed())));
+        } else {
+            holder.windText.setText(context.getString(R.string.imperial_speed, String.valueOf(forecast.getWind().getSpeed())));
+        }
+
+        holder.humidityText.setText(context.getString(R.string.percentage, String.valueOf(forecast.getMain().getHumidity())));
     }
 
     @NonNull
@@ -77,6 +70,26 @@ public class ForecastsAdapter extends RecyclerView.Adapter<ForecastItemViewHolde
         mForecasts.clear();
         mForecasts.addAll(list);
         notifyDataSetChanged();
+    }
+
+    static class ForecastItemViewHolder extends RecyclerView.ViewHolder {
+
+        TextView dayText;
+        TextView humidityText;
+        TextView tempText;
+        TextView timeText;
+        TextView weatherText;
+        TextView windText;
+
+        public ForecastItemViewHolder(final View itemView) {
+            super(itemView);
+            dayText = itemView.findViewById(R.id.day_text);
+            timeText = itemView.findViewById(R.id.time_text);
+            tempText = itemView.findViewById(R.id.main_temp_text);
+            weatherText = itemView.findViewById(R.id.main_text);
+            humidityText = itemView.findViewById(R.id.humidity_percentage_text);
+            windText = itemView.findViewById(R.id.wind_text);
+        }
     }
 
 }

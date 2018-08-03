@@ -113,8 +113,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@id/temperature_value_text"
-                    android:textSize="12sp"
-                    android:textColor="@color/primary_light" />
+                    android:textColor="@color/primary_light"
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -201,10 +201,19 @@
 
             </RelativeLayout>
 
+            <TextView
+                android:text="@string/forecast"
+                android:layout_marginTop="15dp"
+                android:textSize="18sp"
+                android:textColor="@color/primary_dark"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/forecast_list"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="10dp"
                 android:clipToPadding="false"
                 android:overScrollMode="never"

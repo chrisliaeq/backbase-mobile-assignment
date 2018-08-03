@@ -22,57 +22,6 @@ import java.util.List;
  */
 public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationItemViewHolder> {
 
-    static class LocationItemViewHolder extends RecyclerView.ViewHolder {
-
-        TextView cityText;
-        TextView latitudeText;
-        TextView longitudeText;
-        ImageView removeButton;
-
-        public LocationItemViewHolder(final View itemView) {
-            super(itemView);
-            latitudeText = itemView.findViewById(R.id.latitude_text);
-            longitudeText = itemView.findViewById(R.id.longitude_text);
-            removeButton = itemView.findViewById(R.id.remove_button);
-            cityText = itemView.findViewById(R.id.city_text);
-        }
-    }
-
-    static class LocationDiffCallback extends DiffUtil.Callback {
-
-        private List<BookmarkedLocation> newListData;
-        private List<BookmarkedLocation> oldListData;
-
-        public LocationDiffCallback(List<BookmarkedLocation> oldListData, List<BookmarkedLocation> newListData) {
-            this.oldListData = oldListData;
-            this.newListData = newListData;
-        }
-
-        @Override
-        public boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
-            BookmarkedLocation oldLocation = oldListData.get(oldItemPosition);
-            BookmarkedLocation newLocation = newListData.get(newItemPosition);
-            return oldLocation.getId().equals(newLocation.getId());
-        }
-
-        @Override
-        public boolean areItemsTheSame(final int oldItemPosition, final int newItemPosition) {
-            BookmarkedLocation oldLocation = oldListData.get(oldItemPosition);
-            BookmarkedLocation newLocation = newListData.get(newItemPosition);
-            return oldLocation.getLatitude() == newLocation.getLatitude() && oldLocation.getLongitude() == newLocation
-                    .getLongitude();
-        }
-
-        @Override
-        public int getNewListSize() {
-            return newListData.size();
-        }
-
-        @Override
-        public int getOldListSize() {
-            return oldListData.size();
-        }
-    }
     public interface BookmarkedLocationsAdapterListener {
 
         void onLocationClicked(BookmarkedLocation location);
@@ -129,6 +78,58 @@ public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationIte
         mLocations.clear();
         mLocations.addAll(locations);
         diffResult.dispatchUpdatesTo(this);
+    }
+
+    static class LocationItemViewHolder extends RecyclerView.ViewHolder {
+
+        TextView cityText;
+        TextView latitudeText;
+        TextView longitudeText;
+        ImageView removeButton;
+
+        public LocationItemViewHolder(final View itemView) {
+            super(itemView);
+            latitudeText = itemView.findViewById(R.id.latitude_text);
+            longitudeText = itemView.findViewById(R.id.longitude_text);
+            removeButton = itemView.findViewById(R.id.remove_button);
+            cityText = itemView.findViewById(R.id.city_text);
+        }
+    }
+
+    static class LocationDiffCallback extends DiffUtil.Callback {
+
+        private List<BookmarkedLocation> newListData;
+        private List<BookmarkedLocation> oldListData;
+
+        public LocationDiffCallback(List<BookmarkedLocation> oldListData, List<BookmarkedLocation> newListData) {
+            this.oldListData = oldListData;
+            this.newListData = newListData;
+        }
+
+        @Override
+        public boolean areContentsTheSame(final int oldItemPosition, final int newItemPosition) {
+            BookmarkedLocation oldLocation = oldListData.get(oldItemPosition);
+            BookmarkedLocation newLocation = newListData.get(newItemPosition);
+            return oldLocation.getId().equals(newLocation.getId());
+        }
+
+        @Override
+        public boolean areItemsTheSame(final int oldItemPosition, final int newItemPosition) {
+            BookmarkedLocation oldLocation = oldListData.get(oldItemPosition);
+            BookmarkedLocation newLocation = newListData.get(newItemPosition);
+            return oldLocation.getLatitude() == newLocation.getLatitude() && oldLocation.getLongitude() == newLocation
+                    .getLongitude();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newListData.size();
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldListData.size();
+        }
     }
 
 }
