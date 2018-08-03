@@ -10,8 +10,10 @@ import android.view.MenuItem;
 import ca.aequilibrium.weather.R;
 import ca.aequilibrium.weather.fragments.CityFragment;
 import ca.aequilibrium.weather.fragments.CityFragment.CityFragmentListener;
+import ca.aequilibrium.weather.fragments.HelpFragment;
 import ca.aequilibrium.weather.fragments.HomeFragment;
 import ca.aequilibrium.weather.fragments.HomeFragment.HomeFragmentListener;
+import ca.aequilibrium.weather.fragments.SettingsFragment;
 import ca.aequilibrium.weather.models.BookmarkedLocation;
 
 public class MainActivity extends AppCompatActivity implements HomeFragmentListener, CityFragmentListener {
@@ -64,10 +66,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragmentListe
                 }
                 break;
             case R.id.navigation_settings:
-
+                fragmentTag = SettingsFragment.TAG;
+                fragment = fragmentManager.findFragmentByTag(fragmentTag);
+                if (fragment == null) {
+                    fragment = new SettingsFragment();
+                }
                 break;
             case R.id.navigation_help:
-
+                fragmentTag = HelpFragment.TAG;
+                fragment = fragmentManager.findFragmentByTag(fragmentTag);
+                if (fragment == null) {
+                    fragment = new HelpFragment();
+                }
                 break;
         }
         if (fragment != null) {

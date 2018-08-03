@@ -43,6 +43,7 @@ public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationIte
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         holder.latitudeText.setText(decimalFormat.format(location.getLatitude()));
         holder.longitudeText.setText(decimalFormat.format(location.getLongitude()));
+        holder.cityText.setText(location.getCityName());
         holder.removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -82,6 +83,7 @@ public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationIte
 
     static class LocationItemViewHolder extends RecyclerView.ViewHolder {
 
+        TextView cityText;
         TextView latitudeText;
         TextView longitudeText;
         ImageView removeButton;
@@ -91,6 +93,7 @@ public class BookmarkedLocationsAdapter extends RecyclerView.Adapter<LocationIte
             latitudeText = itemView.findViewById(R.id.latitude_text);
             longitudeText = itemView.findViewById(R.id.longitude_text);
             removeButton = itemView.findViewById(R.id.remove_button);
+            cityText = itemView.findViewById(R.id.city_text);
         }
     }
 

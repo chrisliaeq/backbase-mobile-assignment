@@ -9,15 +9,20 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ca.aequilibrium.weather.R;
+import ca.aequilibrium.weather.managers.SettingsManager;
 import ca.aequilibrium.weather.models.CurrentWeather;
 import ca.aequilibrium.weather.models.FiveDayForecast;
+import ca.aequilibrium.weather.models.Weather;
 import ca.aequilibrium.weather.viewmodels.CityViewModel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Chris Li on 2018-08-01.
@@ -41,6 +46,8 @@ public class CityFragment extends Fragment {
     private TextView mTemperatureText;
     private Toolbar mToolbar;
     private TextView mWindText;
+    private TextView mMainText;
+    private TextView mDescriptionText;
 
     public static CityFragment newInstance(double latitude, double longitude) {
         CityFragment cityFragment = new CityFragment();
@@ -94,6 +101,8 @@ public class CityFragment extends Fragment {
         mWindText = view.findViewById(R.id.wind_value_text);
         mHumidityText = view.findViewById(R.id.humidity_value_text);
         mRainChanceText = view.findViewById(R.id.rain_chance_value_text);
+        mMainText = view.findViewById(R.id.main_text);
+        mDescriptionText = view.findViewById(R.id.description_text);
 
         mCityViewModel.getCurrentWeather().observe(this, new Observer<CurrentWeather>() {
             @Override
@@ -116,11 +125,29 @@ public class CityFragment extends Fragment {
         if (currentWeather != null) {
             mToolbar.setTitle(currentWeather.getName());
             mCollapsingToolbarLayout.setTitle(currentWeather.getName());
-            mTemperatureText
-                    .setText(getString(R.string.metric_temp, String.valueOf(currentWeather.getMain().getTemp())));
-            mWindText.setText(getString(R.string.metric_speed, String.valueOf(currentWeather.getWind().getSpeed())));
+
+            if (SettingsManager.getInstance(getContext()).isMetric()) {
+                mTemperatureText
+                        .setText(getString(R.string.metric_temp, String.valueOf(currentWeather.getMain().getTemp())));
+                mWindText.setText(getString(R.string.metric_speed, String.valueOf(currentWeather.getWind().getSpeed())));
+            } else {
+                mTemperatureText
+                        .setText(getString(R.string.imperial_temp, String.valueOf(currentWeather.getMain().getTemp())));
+                mWindText.setText(getString(R.string.imperial_speed, String.valueOf(currentWeather.getWind().getSpeed())));
+            }
             mHumidityText
                     .setText(getString(R.string.percentage, String.valueOf(currentWeather.getMain().getHumidity())));
+            if (currentWeather.getRain() != null) {
+                mRainChanceText.setText(getString(R.string.volume_mm, String.valueOf(currentWeather.getRain().getVolume())));   
+            } else {
+                mRainChanceText.setText(getString(R.string.volume_mm, String.valueOf(0)));
+            }
+
+            List<String> weatherNames = new ArrayList<>();
+            for (Weather weather : currentWeather.getWeather()) {
+                weatherNames.add(weather.getDescription());
+            }
+            mMainText.setText(TextUtils.join(", ", weatherNames));
         }
     }
 

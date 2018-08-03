@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import ca.aequilibrium.weather.managers.SettingsManager;
 import ca.aequilibrium.weather.models.CurrentWeather;
 import ca.aequilibrium.weather.models.FiveDayForecast;
 import ca.aequilibrium.weather.network.GetCurrentForecastAsyncTask;
@@ -21,9 +22,11 @@ public class CityViewModel extends AndroidViewModel {
     private final MutableLiveData<FiveDayForecast> mFiveDayForecastMutableLiveData = new MutableLiveData<>();
     private double mLatitude;
     private double mLongitude;
+    private SettingsManager mSettingsManager;
 
     public CityViewModel(@NonNull final Application application) {
         super(application);
+        mSettingsManager = SettingsManager.getInstance(application.getApplicationContext());
     }
 
     public LiveData<CurrentWeather> getCurrentWeather() {
@@ -35,7 +38,9 @@ public class CityViewModel extends AndroidViewModel {
     }
 
     public void retrieveCurrentWeatherData() {
-        GetCurrentForecastAsyncTask getCurrentForecastAsyncTask = new GetCurrentForecastAsyncTask(mLatitude,
+        GetCurrentForecastAsyncTask getCurrentForecastAsyncTask = new GetCurrentForecastAsyncTask(
+                mSettingsManager.isMetric(),
+                mLatitude,
                 mLongitude,
                 CurrentWeather.class);
         getCurrentForecastAsyncTask.request(new RequestListener<CurrentWeather>() {
@@ -49,7 +54,9 @@ public class CityViewModel extends AndroidViewModel {
     }
 
     public void retrieveFiveDayForecastData() {
-        GetFiveDayForecastAsyncTask getFiveDayForecastAsyncTask = new GetFiveDayForecastAsyncTask(mLatitude,
+        GetFiveDayForecastAsyncTask getFiveDayForecastAsyncTask = new GetFiveDayForecastAsyncTask(
+                mSettingsManager.isMetric(),
+                mLatitude,
                 mLongitude,
                 FiveDayForecast.class);
         getFiveDayForecastAsyncTask.request(new RequestListener<FiveDayForecast>() {
@@ -60,7 +67,6 @@ public class CityViewModel extends AndroidViewModel {
                 }
             }
         });
-
     }
 
     public void setCoordinates(final double latitude, final double longitude) {

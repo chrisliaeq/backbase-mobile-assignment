@@ -2,18 +2,10 @@ package ca.aequilibrium.weather.models;
 
 public class Weather {
 
-    private int id;
     private Clouds clouds;
     private String description;
     private String icon;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private int id;
 
     public Clouds getClouds() {
         return clouds;
@@ -37,5 +29,13 @@ public class Weather {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

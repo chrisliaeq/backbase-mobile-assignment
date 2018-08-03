@@ -12,7 +12,7 @@
     <string name="location_bookmarked">New location bookmarked!</string>
     <string name="temperature">Temperature</string>
     <string name="humidity">Humidity</string>
-    <string name="rain_chance">Chance of Rain</string>
+    <string name="rain_volume">Rain Volume</string>
     <string name="wind">Wind</string>
     <string name="metric_temp">%1$s \u2103</string>
     <string name="imperial_temp">%1$s \u2109</string>
@@ -20,4 +20,11 @@
     <string name="metric_speed">%1$s m/s</string>
     <string name="imperial_speed">%1$s MPH</string>
     <string name="percentage">%1$s %%</string>
+    <string name="user_metric">Units</string>
+    <string name="metric">Metric</string>
+    <string name="imperial">Imperial</string>
+    <string name="clear_locations">Clear Locations</string>
+    <string name="clear">Clear</string>
+    <string name="volume_mm">%1$s mm</string>
+    <string name="clear_bookmarks_message">Are you sure you want to clear all your bookmarked locations?</string>
 </resources>

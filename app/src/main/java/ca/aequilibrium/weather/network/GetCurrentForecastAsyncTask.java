@@ -12,11 +12,13 @@ public class GetCurrentForecastAsyncTask extends GetRequestAsyncTask<CurrentWeat
 
     private double mLatitude;
     private double mLongitude;
+    private boolean mIsMetric;
 
-    public GetCurrentForecastAsyncTask(double latitude, double longitude, Class<CurrentWeather> clazz) {
+    public GetCurrentForecastAsyncTask(boolean isMetric, double latitude, double longitude, Class<CurrentWeather> clazz) {
         super(clazz);
         mLatitude = latitude;
         mLongitude = longitude;
+        mIsMetric = isMetric;
     }
 
     @Override
@@ -24,7 +26,11 @@ public class GetCurrentForecastAsyncTask extends GetRequestAsyncTask<CurrentWeat
         String url = NetworkConstants.BASE_URL + NetworkConstants.WEATHER;
         url += "?lat=" + mLatitude;
         url += "&lon=" + mLongitude;
-        url += "&units=metric";
+        if (mIsMetric) {
+            url += "&units=metric";
+        } else {
+            url += "&units=imperial";
+        }
         url += "&appid=" + BuildConfig.WEATHER_APP_ID;
         return url;
     }

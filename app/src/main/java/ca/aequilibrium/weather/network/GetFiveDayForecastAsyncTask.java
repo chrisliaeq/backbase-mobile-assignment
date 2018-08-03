@@ -14,18 +14,25 @@ public class GetFiveDayForecastAsyncTask extends GetRequestAsyncTask<FiveDayFore
 
     private double mLatitude;
     private double mLongitude;
+    private boolean mIsMetric;
 
-    public GetFiveDayForecastAsyncTask(double latitude, double longitude, Class<FiveDayForecast> clazz) {
+    public GetFiveDayForecastAsyncTask(boolean isMetric, double latitude, double longitude, Class<FiveDayForecast> clazz) {
         super(clazz);
         mLatitude = latitude;
         mLongitude = longitude;
+        mIsMetric = isMetric;
     }
+
     @Override
     String buildUrl() {
         String url = NetworkConstants.BASE_URL + NetworkConstants.FORECAST;
         url += "?lat=" + mLatitude;
         url += "&lon=" + mLongitude;
-        url += "&units=metric";
+        if (mIsMetric) {
+            url += "&units=metric";
+        } else {
+            url += "&units=imperial";
+        }
         url += "&appid=" + BuildConfig.WEATHER_APP_ID;
         return url;
     }

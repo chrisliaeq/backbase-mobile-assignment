@@ -25,4 +25,7 @@ public interface LocationDao {
 
     @Delete
     void removeLocation(BookmarkedLocation location);
+
+    @Query("DELETE FROM BookmarkedLocation")
+    void removeAll();
 }

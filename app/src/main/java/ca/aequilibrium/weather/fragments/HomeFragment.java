@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -38,8 +40,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Chris Li on 2018-08-01.
@@ -186,7 +190,19 @@ public class HomeFragment extends Fragment implements OnMapLongClickListener,
 
     @Override
     public void onMapLongClick(final LatLng latLng) {
-        mHomeViewModel.addLocation(latLng);
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        String cityName;
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            if (addresses.isEmpty()) {
+                cityName = "";
+            } else {
+                cityName = addresses.get(0).getLocality();
+            }
+        } catch (IOException e) {
+            cityName = "";
+        }
+        mHomeViewModel.addLocation(latLng, cityName);
         Toast.makeText(getContext(), R.string.location_bookmarked, Toast.LENGTH_SHORT).show();
     }
 

@@ -18,11 +18,12 @@ public class HomeViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void addLocation(final LatLng latLng) {
+    public void addLocation(final LatLng latLng, String cityName) {
         BookmarkedLocation location = new BookmarkedLocation();
         location.setId(latLng.toString());
         location.setLatitude(latLng.latitude);
         location.setLongitude(latLng.longitude);
+        location.setCityName(cityName);
         AppDatabase.getDatabase(getApplication().getApplicationContext()).getLocationDao()
                 .addLocation(location);
     }
